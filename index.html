@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>原神，启动！</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: black;
+            font-family: "Microsoft YaHei", "Hiragino Sans GB", "Heiti SC", "WenQuanYi Micro Hei", sans-serif;
+        }
+        .danmaku {
+            position: absolute;
+            white-space: nowrap;
+            color: white;
+            font-size: 2.5vw;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+        }
+    </style>
+</head>
+<body>
+    <audio id="bgMusic" loop>
+        <source src="https://example.com/path/to/your/music.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <script>
+        const texts = ["原神，启动", "原神！！！", "Genshin"];
+        const colors = ["#FF0000", "#00FF00", "#0000FF", "#FFFF00", "#FF00FF", "#00FFFF"];
+        const bgMusic = document.getElementById('bgMusic');
+
+        function createDanmaku() {
+            const danmaku = document.createElement('div');
+            danmaku.className = 'danmaku';
+            danmaku.textContent = texts[Math.floor(Math.random() * texts.length)];
+            danmaku.style.color = colors[Math.floor(Math.random() * colors.length)];
+            danmaku.style.top = Math.random() * window.innerHeight + 'px';
+            danmaku.style.left = window.innerWidth + 'px';
+            document.body.appendChild(danmaku);
+
+            const speed = 100 + Math.random() * 150; // 大幅增加速度范围
+            const animation = danmaku.animate([
+                { transform: 'translateX(0)' },
+                { transform: `translateX(-${window.innerWidth + danmaku.offsetWidth}px)` }
+            ], {
+                duration: (window.innerWidth + danmaku.offsetWidth) / speed * 1000,
+                easing: 'linear'
+            });
+
+            animation.onfinish = () => {
+                danmaku.remove();
+            };
+        }
+
+        // 增加弹幕生成频率
+        setInterval(createDanmaku, 100);
+
+        // 添加窗口大小变化时的自适应调整
+        window.addEventListener('resize', () => {
+            document.querySelectorAll('.danmaku').forEach(danmaku => {
+                danmaku.style.fontSize = '2.5vw';
+            });
+        });
+
+        function playMusic() {
+            bgMusic.play().catch(error => {
+                console.log("Auto-play failed. User interaction needed to start audio.");
+            });
+        }
+
+        window.addEventListener('load', playMusic);
+        document.body.addEventListener('click', playMusic);
+
+        bgMusic.onpause = function() {
+            this.play();
+        };
+    </script>
+</body>
+</html>
