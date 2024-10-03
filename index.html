@@ -31,7 +31,7 @@
     </audio>
 
     <script>
-        const texts = ["原神，启动", "原神！！！", "Genshin"];
+        const texts = ["原神，启动", "原神！！！", "Genshin", "点击屏幕启动原神"];
         const colors = ["#FF0000", "#00FF00", "#0000FF", "#FFFF00", "#FF00FF", "#00FFFF"];
         const bgMusic = document.getElementById('bgMusic');
 
@@ -44,7 +44,7 @@
             danmaku.style.left = window.innerWidth + 'px';
             document.body.appendChild(danmaku);
 
-            const speed = 100 + Math.random() * 150; // 大幅增加速度范围
+            const speed = 200 + Math.random() * 200; // 平衡的速度范围
             const animation = danmaku.animate([
                 { transform: 'translateX(0)' },
                 { transform: `translateX(-${window.innerWidth + danmaku.offsetWidth}px)` }
@@ -58,8 +58,14 @@
             };
         }
 
-        // 增加弹幕生成频率
-        setInterval(createDanmaku, 100);
+        // 适度的弹幕生成频率
+        function spawnDanmaku() {
+            for (let i = 0; i < 3; i++) {
+                createDanmaku();
+            }
+        }
+
+        setInterval(spawnDanmaku, 100);
 
         // 添加窗口大小变化时的自适应调整
         window.addEventListener('resize', () => {
